@@ -14,16 +14,10 @@ This package provides reusable Flutter components for displaying blurred dialogs
 
 ## Installation
 
-Add the following files to your Flutter project:
-- `blurry_dialog.dart`
-- `alert_properties.dart`
-- `blured_alert.dart`
-
 Ensure dependencies in `pubspec.yaml`:
 ```yaml
 dependencies:
-  flutter:
-    sdk: flutter
+  blured_alert: latest
 ```
 
 ## Usage
@@ -33,10 +27,6 @@ dependencies:
 The `showBlurryDialog` function displays a dialog with a blurred background.
 
 ```dart
-import 'package:flutter/material.dart';
-import 'blurry_dialog.dart';
-import 'blured_alert.dart';
-import 'alert_properties.dart';
 
 void showSampleDialog(BuildContext context) {
   showBlurryDialog(
