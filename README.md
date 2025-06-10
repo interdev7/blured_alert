@@ -1,33 +1,39 @@
-# Blurry Dialog and Alert Components for Flutter
+# 🌫️ Blured Alert – Blurry Dialog & Custom Alert Widgets for Flutter
 
-This package provides reusable Flutter components for displaying blurred dialogs and customizable alert dialogs with a generic `data` property. The main components are `showBlurryDialog` and `BluredAlert`, enabling visually appealing dialogs with a blurred background and structured alert content.
+A beautiful and reusable set of Flutter components for displaying **blurred dialogs** and **customizable alert views** using a generic `data` property.
 
-## Features
+Easily display visually stunning alerts with flexible content, animation, and style. Great for success, error, or confirmation dialogs!
 
-- **Blurry Dialog**: Uses `BackdropFilter` for a customizable blur effect.
-- **Customizable Alerts**: `AlertProperties` base class for defining alert content (icon, title, description, action).
-- **Generic Data**: Pass any data type to `AlertProperties` for dynamic content.
-- **Responsive Design**: Alerts adapt to screen sizes with customizable width, height, and padding.
-- **Accessibility**: Supports semantic labels for screen readers.
-- **Flexible Styling**: Custom decorations, elevations, and spacing.
-- **Dismissible Behavior**: Configurable barrier dismissibility and pop behavior.
+---
 
-## Installation
+## ✨ Features
 
-Ensure dependencies in `pubspec.yaml`:
+- ✅ **Blurred Background**: Uses `BackdropFilter` for smooth background blur.
+- 🧩 **Modular Alerts**: Create alerts using the `AlertProperties` base class.
+- 🔄 **Generic Data**: Pass custom data to alerts (e.g., payment info, messages).
+- 📱 **Responsive Layout**: Scales beautifully across devices.
+- 🧑‍🦯 **Accessibility Support**: Set `semanticLabel` for screen readers.
+- 🎨 **Flexible Styling**: Customize padding, decoration, spacing, elevation.
+- ❌ **Dismiss Behavior**: Control dismissibility via tap or back press.
+
+---
+
+## 🚀 Installation
+
+Add the package to your `pubspec.yaml`:
+
 ```yaml
 dependencies:
   blured_alert: latest
 ```
 
-## Usage
+---
 
-### 1. Showing a Blurry Dialog
+## 🛠️ Usage
 
-The `showBlurryDialog` function displays a dialog with a blurred background.
+### 1. Show a Simple Blurred Dialog
 
 ```dart
-
 void showSampleDialog(BuildContext context) {
   showBlurryDialog(
     context: context,
@@ -43,39 +49,36 @@ void showSampleDialog(BuildContext context) {
       ),
     ),
     isDismissible: true,
-    sigmaX: 5.0,
-    sigmaY: 5.0,
+    sigmaX: 5,
+    sigmaY: 5,
     backgroundOpacity: 0.5,
     onDismiss: () => debugPrint('Dialog dismissed'),
   );
 }
 ```
 
-**Parameters**:
-- `context`: The `BuildContext` for the dialog.
-- `child`: Content widget (e.g., `BluredAlert`).
-- `isDismissible`: Allows dismissing by tapping outside (default: `true`).
-- `canPop`: Allows back button to pop dialog (default: `true`).
-- `barrierColor`: Barrier color (default: `Colors.black`).
-- `sigmaX`, `sigmaY`: Blur intensity (default: `10.0`).
-- `backgroundOpacity`: Barrier opacity (default: `0.3`).
-- `onPop`: Callback when dialog is popped.
-- `onDismiss`: Callback when dialog is dismissed.
+**Main Parameters:**
+- `context`: Build context for navigation and theming.
+- `child`: Dialog content widget (usually `BluredAlert`).
+- `isDismissible`: Allow dismiss by tapping outside (`true` by default).
+- `sigmaX`, `sigmaY`: Blur intensities (default: `10.0`).
+- `backgroundOpacity`: Background dimness (default: `0.3`).
+- `onPop`, `onDismiss`: Optional callbacks.
+
+---
 
 ### 2. Custom Alert with Generic Data
 
-Use `AlertProperties` with a generic `data` type to pass custom data (e.g., `PaymentModel`).
-
 ```dart
-// Data model
 class PaymentModel {
   final String id;
   final double amount;
 
   PaymentModel({required this.id, required this.amount});
 }
+```
 
-// Custom alert properties
+```dart
 class SuccessPaymentAlertProperties extends AlertProperties<PaymentModel> {
   SuccessPaymentAlertProperties({super.context, super.data}) {
     title = Text('Payment Successful');
@@ -87,25 +90,16 @@ class SuccessPaymentAlertProperties extends AlertProperties<PaymentModel> {
     );
     action = ElevatedButton(
       onPressed: () {
-        if (data != null) {
-          debugPrint('Processing payment ID: ${data!.id}, \$${data!.amount}');
-        }
+        debugPrint('Payment ID: ${data?.id}');
         context?.pop();
       },
       child: Text('OK'),
     );
-    decoration = BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-    );
-    semanticLabel = 'Success payment';
-    spacing = 15.0;
-    elevation = 6.0;
-    padding = EdgeInsets.all(20);
   }
 }
+```
 
-// Show alert
+```dart
 void showSuccessAlert(BuildContext context) {
   showBlurryDialog(
     context: context,
@@ -119,9 +113,9 @@ void showSuccessAlert(BuildContext context) {
 }
 ```
 
-### 3. Alert with Localization and Generic Data
+---
 
-Integrate localization (e.g., `easy_localization`) and use `data` for dynamic content.
+### 3. Localized Alert with Data (e.g. `easy_localization`)
 
 ```dart
 class SuccessPaymentAlertProperties extends AlertProperties<PaymentModel> {
@@ -135,40 +129,16 @@ class SuccessPaymentAlertProperties extends AlertProperties<PaymentModel> {
       }) ?? 'Payment completed.',
     );
     action = ElevatedButton(
-      onPressed: () {
-        if (data != null) {
-          debugPrint('Confirmed payment: ${data!.id}, \$${data!.amount}');
-        }
-        context?.pop();
-      },
+      onPressed: () => context?.pop(),
       child: Text(context?.tr('successPaymentAlert.buttonText') ?? 'OK'),
     );
-    decoration = BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-    );
-    semanticLabel = 'Success payment';
-    spacing = 20.0;
-    elevation = 6.0;
-    padding = EdgeInsets.all(20);
   }
-}
-
-// Usage
-void showLocalizedAlert(BuildContext context) {
-  showBlurryDialog(
-    context: context,
-    child: BluredAlert(
-      alert: SuccessPaymentAlertProperties(
-        context: context,
-        data: PaymentModel(id: '123456', amount: 50.0),
-      ),
-    ),
-  );
 }
 ```
 
-### 4. Failed Payment Alert Example
+---
+
+### 4. Failed Payment Example
 
 ```dart
 class FailedPaymentAlertProperties extends AlertProperties<PaymentModel> {
@@ -182,66 +152,49 @@ class FailedPaymentAlertProperties extends AlertProperties<PaymentModel> {
     );
     action = ElevatedButton(
       onPressed: () {
-        if (data != null) {
-          debugPrint('Retry payment ID: ${data!.id}');
-        }
+        debugPrint('Retry payment ID: ${data?.id}');
         context?.pop();
       },
       child: Text('Try Again'),
     );
-    decoration = BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-    );
-    semanticLabel = 'Failed payment';
-    spacing = 15.0;
-    elevation = 6.0;
-    padding = EdgeInsets.all(20);
   }
-}
-
-void showFailedAlert(BuildContext context) {
-  showBlurryDialog(
-    context: context,
-    child: BluredAlert(
-      alert: FailedPaymentAlertProperties(
-        context: context,
-        data: PaymentModel(id: '123456', amount: 50.0),
-      ),
-    ),
-  );
 }
 ```
 
-## AlertProperties Fields
+---
 
-- `data`: Generic data (e.g., `PaymentModel`) for dynamic content.
-- `context`: `BuildContext` for navigation/localization.
-- `title`: Alert title widget.
-- `icon`: Alert icon widget.
-- `semanticLabel`: Accessibility label.
-- `description`: Alert description widget.
-- `action`: Action widget (e.g., buttons).
-- `spacing`: Spacing between elements (default: `30.0`).
-- `elevation`: Alert elevation (default: `0`).
-- `width`: Alert width (default: 87% of screen width).
-- `height`: Alert height (optional).
-- `padding`: Alert padding (default: `EdgeInsets.symmetric(horizontal: 45, vertical: 50)`).
-- `decoration`: Custom decoration (default: white with rounded corners).
-- `builder`: Optional custom builder for alert layout.
+## 📦 `AlertProperties<T>` – API Overview
 
-## Notes
+| Property         | Description                                                                 |
+|------------------|-----------------------------------------------------------------------------|
+| `data`           | Generic data object (e.g., `PaymentModel`)                                 |
+| `context`        | Build context (used for navigation, localization, etc.)                    |
+| `title`          | Title widget                                                               |
+| `icon`           | Optional icon widget                                                       |
+| `description`    | Description widget                                                         |
+| `action`         | Button(s) or any widget                                                    |
+| `spacing`        | Vertical spacing between elements (`default: 30`)                          |
+| `elevation`      | Dialog elevation                                                            |
+| `width`          | Dialog width (`default: 87%` of screen)                                    |
+| `height`         | Optional dialog height                                                      |
+| `padding`        | Inner padding (`default: EdgeInsets.symmetric(horizontal: 45, vertical: 50)`) |
+| `decoration`     | Background decoration                                                       |
+| `semanticLabel`  | Accessibility label                                                         |
+| `builder`        | Optional custom builder to override layout                                 |
 
-- **Generic Data**: Check `data != null` before accessing properties to avoid errors.
-- **Context**: Pass a valid `BuildContext` to avoid warnings.
-- **Localization**: Use with packages like `easy_localization` for translatable strings.
-- **Accessibility**: Set `semanticLabel` for screen reader support.
-- **Performance**: `BackdropFilter` may impact low-end devices.
+---
 
+## 📝 Notes
 
-## Limitations
+- ✅ Always check `data != null` before accessing it.
+- 🌐 Use localization packages like `easy_localization` for multi-language support.
+- ♿ Set `semanticLabel` for accessibility compliance.
+- ⚠️ `BackdropFilter` may affect performance on low-end devices.
 
-- `BackdropFilter` may cause performance issues on low-end devices.
-- Ensure `context` is not null in `AlertProperties`.
-- Default alert width is 87% of screen width (customizable via `width`).
+---
 
+## ⚠️ Limitations
+
+- ❗ `BackdropFilter` can be heavy for devices with low GPU performance.
+- 🔄 Ensure `context` is valid when building the alert.
+- 📏 Default width is 87% of screen; override if needed.
